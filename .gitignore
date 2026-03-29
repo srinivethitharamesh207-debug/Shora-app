@@ -1,0 +1,38 @@
+# Frontend
+node_modules/
+dist/
+build/
+.env.local
+.env.*.local
+
+# Backend
+target/
+*.class
+*.jar
+*.war
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+
+# Maven
+.m2/
+mvn-repo/
+
+# Logs
+*.log
+logs/
+
+# OS
+Thumbs.db
+.env
+.env.example

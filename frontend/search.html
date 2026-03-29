@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shora - Search</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <main class="dashboard-page">
+        <section class="mobile-app">
+            <header class="search-hero">
+                <div class="search-top">
+                    <a href="index.html" aria-label="Back to home">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6"></path>
+                        </svg>
+                        Back
+                    </a>
+                    <button id="openAgentSheetTop" class="search-top-btn" type="button" aria-label="Open agent selection">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 6h4"></path>
+                            <path d="M4 12h10"></path>
+                            <path d="M4 18h16"></path>
+                            <circle cx="18" cy="6" r="2"></circle>
+                            <circle cx="16" cy="12" r="2"></circle>
+                            <circle cx="14" cy="18" r="2"></circle>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="search-input">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input id="searchInput" type="text" placeholder="Search for courses, topics..." />
+                    <button id="openAgentSheet" type="button" aria-label="Filter">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                            <path d="M8 9h8"></path>
+                            <path d="M8 12h6"></path>
+                            <path d="M8 15h4"></path>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <div class="search-chip">
+                <span>🐍 Python</span>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                    <path d="M9 12h6"></path>
+                </svg>
+            </div>
+
+            <section class="search-illustration" aria-hidden="true">
+                <div class="search-orb"></div>
+                <div class="search-orb small"></div>
+                <div class="search-orb tiny"></div>
+                <div class="search-row">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+            </section>
+
+            <section class="trending-section">
+                <h2>Trending Courses</h2>
+                <div id="searchResults" class="trending-list"></div>
+            </section>
+
+            <nav class="bottom-nav" aria-label="Primary">
+                <a class="nav-item" href="index.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 10.5 12 3l9 7.5"></path>
+                        <path d="M5 10v10h14V10"></path>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a class="nav-item active" href="search.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span>Search</span>
+                </a>
+                <a class="nav-item" href="progress.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 5h16v14H4z"></path>
+                        <path d="M8 5v14"></path>
+                        <path d="M16 5v14"></path>
+                    </svg>
+                    <span>Progress</span>
+                </a>
+                <a class="nav-item" href="practice.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 3h10v18l-5-3-5 3z"></path>
+                    </svg>
+                    <span>Practice</span>
+                </a>
+                <a class="nav-item" href="profile.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 21c1.5-3.5 4-5.3 8-5.3S18.5 17.5 20 21"></path>
+                    </svg>
+                    <span>Profile</span>
+                </a>
+            </nav>
+        </section>
+    </main>
+
+    <div id="agentSheetOverlay" class="sheet-overlay" aria-hidden="true"></div>
+    <div id="agentSheet" class="sheet-panel" role="dialog" aria-modal="true" aria-label="Agent selection">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">
+            <h3>Agent Selection</h3>
+            <button id="closeAgentSheet" class="sheet-close" type="button">×</button>
+        </div>
+        <div class="sheet-option">
+            <span>Mentor Mode</span>
+            <small>Guided</small>
+        </div>
+        <div class="sheet-option">
+            <span>Focus Sprint</span>
+            <small>Timeboxed</small>
+        </div>
+        <div class="sheet-option">
+            <span>Interview Prep</span>
+            <small>Practice</small>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const results = document.getElementById('searchResults');
+        let courses = [];
+
+        function renderCourses(list) {
+            results.innerHTML = '';
+            if (!list.length) {
+                results.innerHTML = '<p style="color:#6b7484;font-size:0.85rem;">No courses found.</p>';
+                return;
+            }
+            list.forEach(course => {
+                const card = document.createElement('article');
+                card.className = 'trending-card';
+                card.dataset.title = course.title.toLowerCase();
+                card.innerHTML = `
+                    <div class="trend-icon">${course.tag || 'CL'}</div>
+                    <div class="trend-meta">
+                        <h3>${course.title}</h3>
+                        <p>${course.level}</p>
+                    </div>
+                `;
+                results.appendChild(card);
+            });
+        }
+
+        function filterCards() {
+            const query = searchInput.value.trim().toLowerCase();
+            const filtered = !query ? courses : courses.filter(c => c.title.toLowerCase().includes(query));
+            renderCourses(filtered);
+        }
+
+        fetch('http://localhost:8000/api/courses')
+            .then(res => res.json())
+            .then(data => {
+                courses = Array.isArray(data.items) ? data.items : [];
+                renderCourses(courses);
+            })
+            .catch(() => {
+                courses = [
+                    { title: 'Python Basics', level: 'Beginner', tag: 'Py' },
+                    { title: 'React Fundamentals', level: 'Intermediate', tag: 'JS' },
+                    { title: 'Machine Learning with Python', level: 'Advanced', tag: 'Py' }
+                ];
+                renderCourses(courses);
+            });
+
+        searchInput.addEventListener('input', filterCards);
+
+        const agentSheet = document.getElementById('agentSheet');
+        const agentOverlay = document.getElementById('agentSheetOverlay');
+        const openAgentSheet = document.getElementById('openAgentSheet');
+        const openAgentSheetTop = document.getElementById('openAgentSheetTop');
+        const closeAgentSheet = document.getElementById('closeAgentSheet');
+
+        function showSheet() {
+            agentSheet.classList.add('show');
+            agentOverlay.classList.add('show');
+        }
+
+        function hideSheet() {
+            agentSheet.classList.remove('show');
+            agentOverlay.classList.remove('show');
+        }
+
+        openAgentSheet.addEventListener('click', showSheet);
+        openAgentSheetTop.addEventListener('click', showSheet);
+        closeAgentSheet.addEventListener('click', hideSheet);
+        agentOverlay.addEventListener('click', hideSheet);
+    </script>
+</body>
+</html>

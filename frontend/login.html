@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shora - Login</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="header-icon">📘</div>
+                <h1>Welcome Back!</h1>
+                <p>Sign in to continue your learning journey</p>
+                <div class="login-illustration" aria-hidden="true">👨‍💻</div>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email@example.com" required>
+                </div>
+
+                <div class="form-group password-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <button class="password-toggle" type="button" aria-label="Show password" data-target="password">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="forgot-wrap">
+                    <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-signup login-submit">Log In</button>
+            </form>
+
+            <div class="social-divider"><span>OR</span></div>
+            <div class="social-section social-row">
+                <button class="btn btn-google" type="button">
+                    <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+                        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.655 32.657 29.194 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.843 1.153 7.961 3.039l5.657-5.657C34.058 6.052 29.277 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"></path>
+                        <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 16.108 19.005 13 24 13c3.059 0 5.843 1.153 7.961 3.039l5.657-5.657C34.058 6.052 29.277 4 24 4c-7.732 0-14.41 4.387-17.694 10.691z"></path>
+                        <path fill="#4CAF50" d="M24 44c5.176 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.143 35.091 26.703 36 24 36c-5.173 0-9.626-3.326-11.283-7.946l-6.522 5.025C9.436 39.556 16.522 44 24 44z"></path>
+                        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a11.978 11.978 0 0 1-4.084 5.57l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"></path>
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <button class="btn btn-apple" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M16.365 1.43c0 1.14-.414 2.045-1.243 2.714-.829.67-1.802 1.005-2.92 1.005-.048-.144-.071-.34-.071-.59 0-1.092.45-2.02 1.35-2.785.45-.383.968-.69 1.557-.922.589-.23 1.104-.37 1.543-.422.047.19.071.357.071.5zM20.818 17.018c-.296.678-.618 1.301-.967 1.87-.475.773-.863 1.309-1.165 1.607-.466.488-.964.739-1.492.755-.379 0-.836-.11-1.371-.332-.536-.221-1.028-.332-1.478-.332-.471 0-.976.11-1.514.332-.539.222-.973.34-1.302.356-.508.022-1.018-.234-1.528-.768-.325-.312-.73-.866-1.215-1.662-.521-.852-.95-1.84-1.286-2.963-.36-1.212-.539-2.385-.539-3.52 0-1.3.281-2.423.843-3.367.442-.758 1.03-1.357 1.764-1.796.735-.438 1.53-.662 2.388-.674.419 0 .968.13 1.65.388.68.259 1.117.388 1.307.388.142 0 .621-.15 1.436-.45.771-.278 1.421-.393 1.95-.345 1.433.116 2.508.68 3.223 1.695-1.281.776-1.916 1.864-1.905 3.264.012 1.09.407 2.002 1.186 2.735.35.337.74.597 1.172.78-.095.275-.196.54-.304.795z"></path>
+                    </svg>
+                    Continue with Apple
+                </button>
+            </div>
+
+            <p class="auth-link">Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

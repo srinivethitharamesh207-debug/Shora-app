@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shora - Progress</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <main class="dashboard-page">
+        <section class="mobile-app">
+            <header class="progress-hero">
+                <div class="progress-headline">
+                    <h1>Your Progress</h1>
+                    <button id="openAchievementsSheet" class="progress-pill" type="button" aria-label="Open achievements">✓</button>
+                </div>
+            </header>
+
+            <section class="progress-section">
+                <article class="progress-card">
+                    <div class="progress-card-title">
+                        <h2>Learning Activity This Week</h2>
+                        <span>Hours Spent</span>
+                    </div>
+                    <div class="progress-chart">
+                        <div id="progressChart"></div>
+                        <div id="progressLabels" class="progress-labels"></div>
+                    </div>
+                    <p id="progressEmpty" class="progress-empty">No activity yet. Start a course to see your weekly progress.</p>
+                </article>
+
+                <article class="progress-card">
+                    <div class="progress-card-title">
+                        <h2>Course Completion &amp; Achievements</h2>
+                    </div>
+                    <div class="donut-wrap">
+                        <div id="donutChart" class="donut-chart zero" aria-hidden="true"></div>
+                        <div class="donut-legend">
+                            <div><span class="dot completed"></span>Completed (<span id="completedPct">0</span>%)</div>
+                            <div><span class="dot badges"></span>Badges Earned (<span id="badgesPct">0</span>%)</div>
+                        </div>
+                    </div>
+                    <p id="achievementsEmpty" class="progress-empty">Complete lessons to unlock achievements.</p>
+                </article>
+
+                <div class="progress-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">✓</div>
+                        <div>
+                            <p>Courses Mastered</p>
+                            <h3 id="coursesMastered">0</h3>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon flame">🔥</div>
+                        <div>
+                            <p>Current Streak</p>
+                            <h3><span id="streakDays">0</span> Days</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <nav class="bottom-nav" aria-label="Primary">
+                <a class="nav-item" href="index.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 10.5 12 3l9 7.5"></path>
+                        <path d="M5 10v10h14V10"></path>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a class="nav-item" href="search.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span>Search</span>
+                </a>
+                <a class="nav-item active" href="progress.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 5h16v14H4z"></path>
+                        <path d="M8 5v14"></path>
+                        <path d="M16 5v14"></path>
+                    </svg>
+                    <span>Progress</span>
+                </a>
+                <a class="nav-item" href="practice.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 3h10v18l-5-3-5 3z"></path>
+                    </svg>
+                    <span>Practice</span>
+                </a>
+                <a class="nav-item" href="profile.html">
+                    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4 21c1.5-3.5 4-5.3 8-5.3S18.5 17.5 20 21"></path>
+                    </svg>
+                    <span>Profile</span>
+                </a>
+            </nav>
+        </section>
+    </main>
+
+    <div id="achievementsSheetOverlay" class="sheet-overlay" aria-hidden="true"></div>
+    <div id="achievementsSheet" class="sheet-panel" role="dialog" aria-modal="true" aria-label="Achievements">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">
+            <h3>Achievements</h3>
+            <button id="closeAchievementsSheet" class="sheet-close" type="button">×</button>
+        </div>
+        <div class="sheet-option">
+            <span>Completed Lessons</span>
+            <small>0</small>
+        </div>
+        <div class="sheet-option">
+            <span>Badges Earned</span>
+            <small>0</small>
+        </div>
+        <div class="sheet-option">
+            <span>Streak</span>
+            <small>0 days</small>
+        </div>
+    </div>
+
+    <script>
+        const chartEl = document.getElementById('progressChart');
+        const labelsEl = document.getElementById('progressLabels');
+        const donutChart = document.getElementById('donutChart');
+        const completedPct = document.getElementById('completedPct');
+        const badgesPct = document.getElementById('badgesPct');
+        const coursesMastered = document.getElementById('coursesMastered');
+        const streakDays = document.getElementById('streakDays');
+        const progressEmpty = document.getElementById('progressEmpty');
+        const achievementsEmpty = document.getElementById('achievementsEmpty');
+
+        function buildChart(hours = []) {
+            const max = Math.max(1, ...hours);
+            const width = 320;
+            const height = 140;
+            const paddingX = 20;
+            const baseY = 105;
+            const step = (width - paddingX * 2) / (hours.length - 1 || 1);
+            const points = hours.map((h, i) => {
+                const x = paddingX + i * step;
+                const y = baseY - (h / max) * 70;
+                return [x, y];
+            });
+            const poly = points.map(p => p.join(',')).join(' ');
+            const area = `M${paddingX} 110 L ${poly} L ${width - paddingX} 110 Z`;
+
+            chartEl.innerHTML = `
+                <svg viewBox="0 0 320 140" width="100%" height="140" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#5dd2b9" stop-opacity="0.55"></stop>
+                            <stop offset="100%" stop-color="#5dd2b9" stop-opacity="0.05"></stop>
+                        </linearGradient>
+                    </defs>
+                    <path d="${area}" fill="url(#areaFill)"></path>
+                    <polyline points="${poly}" fill="none" stroke="#48c4ac" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                    <g fill="#ffffff" stroke="#48c4ac" stroke-width="3">
+                        ${points.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="5"></circle>`).join('')}
+                    </g>
+                </svg>
+            `;
+        }
+
+        function renderProgress(data) {
+            const hours = Array.isArray(data.weekly_hours) ? data.weekly_hours : [];
+            const days = Array.isArray(data.days) ? data.days : [];
+            const total = hours.reduce((a, b) => a + b, 0);
+
+            buildChart(hours.length ? hours : [0, 0, 0, 0, 0, 0]);
+            labelsEl.innerHTML = (days.length ? days : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])
+                .map(d => `<span>${d}</span>`).join('');
+
+            const completed = Number(data.completed_pct || 0);
+            const badges = Number(data.badges_pct || 0);
+            completedPct.textContent = completed;
+            badgesPct.textContent = badges;
+            donutChart.classList.toggle('zero', completed === 0 && badges === 0);
+            const badgeEnd = Math.min(100, completed + badges);
+            donutChart.style.background = `conic-gradient(#45c2d5 0 ${completed}%, #f0c36d ${completed}% ${badgeEnd}%, #dfe7f1 ${badgeEnd}% 100%)`;
+
+            coursesMastered.textContent = data.courses_mastered || 0;
+            streakDays.textContent = data.streak_days || 0;
+
+            progressEmpty.style.display = total === 0 ? 'block' : 'none';
+            achievementsEmpty.style.display = (completed === 0 && badges === 0) ? 'block' : 'none';
+        }
+
+        fetch('http://localhost:8000/api/progress')
+            .then(res => res.json())
+            .then(renderProgress)
+            .catch(() => renderProgress({}));
+
+        const achievementsSheet = document.getElementById('achievementsSheet');
+        const achievementsOverlay = document.getElementById('achievementsSheetOverlay');
+        const openAchievements = document.getElementById('openAchievementsSheet');
+        const closeAchievements = document.getElementById('closeAchievementsSheet');
+
+        function showAchievements() {
+            achievementsSheet.classList.add('show');
+            achievementsOverlay.classList.add('show');
+        }
+
+        function hideAchievements() {
+            achievementsSheet.classList.remove('show');
+            achievementsOverlay.classList.remove('show');
+        }
+
+        openAchievements.addEventListener('click', showAchievements);
+        closeAchievements.addEventListener('click', hideAchievements);
+        achievementsOverlay.addEventListener('click', hideAchievements);
+    </script>
+</body>
+</html>

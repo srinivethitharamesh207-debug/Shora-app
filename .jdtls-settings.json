@@ -1,0 +1,11 @@
+{
+  "java.trace.server": "off",
+  "java.debug.logLevel": "warn",
+  "java.saveActions.organizeImports": false,
+  "java.signatureHelp.description": "full",
+  "java.completion.overwrite": true,
+  "java.completion.guessMethodArguments": false,
+  "java.foldingRange.enabled": true,
+  "java.progressReports.enabled": true,
+  "java.format.enabled": true
+}
