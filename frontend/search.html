@@ -109,24 +109,36 @@
         </section>
     </main>
 
-    <div id="agentSheetOverlay" class="sheet-overlay" aria-hidden="true"></div>
-    <div id="agentSheet" class="sheet-panel" role="dialog" aria-modal="true" aria-label="Agent selection">
+    <div id="agentSheetOverlay" class="sheet-overlay fullscreen" aria-hidden="true"></div>
+    <div id="agentSheet" class="sheet-panel fullscreen" role="dialog" aria-modal="true" aria-label="Agent selection">
         <div class="sheet-handle"></div>
         <div class="sheet-title">
             <h3>Agent Selection</h3>
             <button id="closeAgentSheet" class="sheet-close" type="button">×</button>
         </div>
-        <div class="sheet-option">
-            <span>Mentor Mode</span>
-            <small>Guided</small>
-        </div>
-        <div class="sheet-option">
-            <span>Focus Sprint</span>
-            <small>Timeboxed</small>
-        </div>
-        <div class="sheet-option">
-            <span>Interview Prep</span>
-            <small>Practice</small>
+        <p style="color:#6b7484;font-size:0.9rem;margin:0 0 10px;">Pick an agent style to customize your journey.</p>
+        <div class="agent-grid">
+            <div class="agent-card" data-agent="openai">
+                <div>
+                    <span>Mentor Mode</span><br>
+                    <small>Guided coaching</small>
+                </div>
+                <button class="pill select-agent" type="button">Select</button>
+            </div>
+            <div class="agent-card" data-agent="gemini">
+                <div>
+                    <span>Focus Sprint</span><br>
+                    <small>Timeboxed sessions</small>
+                </div>
+                <button class="pill select-agent" type="button">Select</button>
+            </div>
+            <div class="agent-card" data-agent="anthropic">
+                <div>
+                    <span>Interview Prep</span><br>
+                    <small>Mock questions</small>
+                </div>
+                <button class="pill select-agent" type="button">Select</button>
+            </div>
         </div>
     </div>
 
@@ -135,10 +147,11 @@
         const results = document.getElementById('searchResults');
         let courses = [];
 
-        function renderCourses(list) {
+        function renderCourses(list, query = '') {
             results.innerHTML = '';
             if (!list.length) {
-                results.innerHTML = '<p style="color:#6b7484;font-size:0.85rem;">No courses found.</p>';
+                const label = query ? `No courses found for "${query}".` : 'No courses found.';
+                results.innerHTML = `<p style="color:#6b7484;font-size:0.85rem;">${label}</p>`;
                 return;
             }
             list.forEach(course => {
@@ -159,10 +172,12 @@
         function filterCards() {
             const query = searchInput.value.trim().toLowerCase();
             const filtered = !query ? courses : courses.filter(c => c.title.toLowerCase().includes(query));
-            renderCourses(filtered);
+            renderCourses(filtered, query);
         }
 
-        fetch('http://localhost:8000/api/courses')
+        const API_BASE = 'http://127.0.0.1:8000/api';
+
+        fetch(`${API_BASE}/courses`)
             .then(res => res.json())
             .then(data => {
                 courses = Array.isArray(data.items) ? data.items : [];
@@ -195,10 +210,28 @@
             agentOverlay.classList.remove('show');
         }
 
-        openAgentSheet.addEventListener('click', showSheet);
-        openAgentSheetTop.addEventListener('click', showSheet);
-        closeAgentSheet.addEventListener('click', hideSheet);
-        agentOverlay.addEventListener('click', hideSheet);
+        if (openAgentSheet) openAgentSheet.addEventListener('click', showSheet);
+        if (openAgentSheetTop) openAgentSheetTop.addEventListener('click', showSheet);
+        if (closeAgentSheet) closeAgentSheet.addEventListener('click', hideSheet);
+        if (agentOverlay) agentOverlay.addEventListener('click', hideSheet);
+
+        const agentCards = document.querySelectorAll('.agent-card');
+        function goToAgent(card) {
+            const agent = card.getAttribute('data-agent') || 'openai';
+            window.location.href = `agent-chat.html?agent=${encodeURIComponent(agent)}`;
+        }
+        if (agentCards.length) {
+            agentCards.forEach(card => {
+                card.addEventListener('click', () => goToAgent(card));
+                const btn = card.querySelector('.select-agent');
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        goToAgent(card);
+                    });
+                }
+            });
+        }
     </script>
 </body>
 </html>

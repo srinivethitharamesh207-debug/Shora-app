@@ -1,5 +1,6 @@
 package com.shora.controller;
 
+import com.shora.dto.ForgotPasswordRequest;
 import com.shora.dto.LoginRequest;
 import com.shora.dto.SignupRequest;
 import com.shora.service.AuthService;
@@ -44,6 +45,18 @@ public class AuthController {
             Map<String, String> error = new HashMap<>();
             error.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        try {
+            Map<String, String> response = authService.forgotPassword(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
     }
     

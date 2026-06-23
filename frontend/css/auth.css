@@ -14,17 +14,18 @@
     align-items: center;
     min-height: 100vh;
     background: radial-gradient(circle at 10% 20%, #f7fbff, #eceff4 55%, #e6ebf2);
-    padding: 20px;
+    padding: 0;
 }
 
 .signup-card,
 .login-card {
     background: white;
-    border-radius: 28px;
+    border-radius: 0;
     box-shadow: 0 20px 60px rgba(21, 34, 56, 0.16);
     width: 100%;
-    max-width: 430px;
+    max-width: 100%;
     overflow: hidden;
+    min-height: 100vh;
 }
 
 .signup-header,
@@ -250,6 +251,63 @@
 
 .forgot-card .auth-link {
     padding-bottom: 24px;
+}
+
+.sheet-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 50;
+}
+
+.sheet-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sheet-panel {
+    width: 100%;
+    max-width: 480px;
+    background: #ffffff;
+    border-radius: 24px 24px 0 0;
+    padding: 18px 22px 24px;
+    box-shadow: 0 -20px 40px rgba(15, 23, 42, 0.18);
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+}
+
+.sheet-overlay.is-visible .sheet-panel {
+    transform: translateY(0);
+}
+
+.sheet-handle {
+    width: 48px;
+    height: 5px;
+    border-radius: 999px;
+    background: #dbe2ea;
+    margin: 0 auto 14px;
+}
+
+.sheet-panel h3 {
+    margin: 4px 0 6px;
+    font-size: 1.2rem;
+    color: var(--ink);
+}
+
+.sheet-panel p {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.sheet-action {
+    width: 100%;
 }
 
 @media (max-width: 480px) {

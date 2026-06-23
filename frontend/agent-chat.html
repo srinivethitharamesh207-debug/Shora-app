@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shora - Agent Chat</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <main class="dashboard-page">
+        <section class="mobile-app">
+            <header class="search-hero">
+                <div class="search-top">
+                    <a href="search.html" aria-label="Back to search">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6"></path>
+                        </svg>
+                        Back
+                    </a>
+                    <div class="search-top-btn" id="settings-btn" style="cursor: pointer;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 3l5 5-6 6-2-2-7 7-3-3 7-7-2-2 6-6z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div style="margin-top:12px;">
+                    <h2 style="margin:0;font-size:1.2rem;" id="agentTitle">Agent Chat</h2>
+                    <p style="margin:6px 0 0;font-size:0.85rem;color:#eef6ff;">Agent ready to help you learn.</p>
+                </div>
+            </header>
+
+            <section class="chat-section" id="chat-messages">
+                <!-- Chat messages will be added dynamically -->
+            </section>
+
+            <form class="chat-input" id="chat-form">
+                <input type="text" id="message-input" placeholder="Type your message..." aria-label="Message" />
+                <button type="button" id="send-button" class="pill">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Agent Selection Modal -->
+    <div id="agent-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Choose Your AI Agent</h3>
+                <span class="modal-close" id="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="agent-options">
+                    <button class="agent-option" data-agent="openai">
+                        <div class="agent-icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>
+                            </svg>
+                        </div>
+                        <div class="agent-info">
+                            <h4>ChatGPT</h4>
+                            <p>Powered by OpenAI GPT-3.5 Turbo</p>
+                        </div>
+                    </button>
+                    
+                    <button class="agent-option" data-agent="gemini">
+                        <div class="agent-icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <div class="agent-info">
+                            <h4>Gemini</h4>
+                            <p>Powered by Google Gemini 1.5 Pro</p>
+                        </div>
+                    </button>
+                    
+                    <button class="agent-option" data-agent="anthropic">
+                        <div class="agent-icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                <path d="M14.5 2l-1.5 3h-3l-1.5-3h-6v20h6l1.5-3h3l1.5 3h6V2h-6zm-1.5 14h-3l-1.5-3h6l-1.5 3z"/>
+                            </svg>
+                        </div>
+                        <div class="agent-info">
+                            <h4>Claude</h4>
+                            <p>Powered by Anthropic Claude 3</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agent selection state
+        let selectedAgent = null;
+        const settingsBtn = document.getElementById('settings-btn');
+        const agentModal = document.getElementById('agent-modal');
+        const modalClose = document.getElementById('modal-close');
+        const agentOptions = document.querySelectorAll('.agent-option');
+
+        // Get agent type from URL parameters (fallback)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlAgent = urlParams.get('agent');
+
+        const agentMap = {
+            'openai': 'openai',
+            'chatgpt': 'openai',
+            'gpt': 'openai',
+            'mentor': 'openai',
+            'mentor mode': 'openai',
+            'gemini': 'gemini',
+            'google': 'gemini',
+            'focus sprint': 'gemini',
+            'anthropic': 'anthropic',
+            'claude': 'anthropic',
+            'interview prep': 'anthropic'
+        };
+
+        const normalizedAgent = urlAgent ? agentMap[urlAgent.toLowerCase()] : null;
+
+        // Set page title based on agent
+        const agentTitles = {
+            'openai': 'ChatGPT Agent',
+            'gemini': 'Gemini Agent',
+            'anthropic': 'Claude Agent'
+        };
+
+        // Update page title
+        function updatePageTitle(agent) {
+            const title = document.getElementById('agentTitle');
+            if (title) {
+                title.textContent = (agentTitles[agent] || 'AI Agent') + ' Chat';
+            }
+        }
+
+        // Show modal
+        function showModal() {
+            agentModal.style.display = 'flex';
+        }
+
+        // Hide modal
+        function hideModal() {
+            agentModal.style.display = 'none';
+        }
+
+        // Select agent
+        function selectAgent(agentType) {
+            selectedAgent = agentType;
+            updatePageTitle(agentType);
+            
+            // Update UI
+            agentOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.agent === agentType) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Hide modal and settings button
+            hideModal();
+            settingsBtn.style.display = 'none';
+            
+            // Enable chat
+            messageInput.disabled = false;
+            sendButton.disabled = false;
+            messageInput.placeholder = "Type your message...";
+            
+            // Add welcome message
+            addMessage(`Hello! I'm your ${agentTitles[agentType] || 'AI Agent'}. How can I help you learn today?`, false);
+        }
+
+        // Chat functionality
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const chatForm = document.getElementById('chat-form');
+
+        // Initially disable chat
+        messageInput.disabled = true;
+        sendButton.disabled = true;
+        messageInput.placeholder = "Please select an agent first...";
+
+        // Get authentication token
+        function getToken() {
+            return localStorage.getItem('token');
+        }
+
+        // Add message to chat
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-bubble ${isUser ? 'user' : 'agent'}`;
+
+            messageDiv.textContent = content;
+            chatMessages.appendChild(messageDiv);
+
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Send message to agent
+        async function sendMessage() {
+            if (!selectedAgent) {
+                showModal();
+                return;
+            }
+
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            const token = getToken();
+            if (!token) {
+                addMessage('Please log in to use the chat.', false);
+                return;
+            }
+
+            // Add user message to chat
+            addMessage(message, true);
+            messageInput.value = '';
+            sendButton.disabled = true;
+            sendButton.textContent = 'Sending...';
+
+            try {
+                const response = await fetch('http://127.0.0.1:8010/agent/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        agent_type: selectedAgent
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    addMessage(data.response, false);
+                } else if (response.status === 401) {
+                    addMessage('Session expired. Please log in again.', false);
+                    // Redirect to login after a delay
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    const error = await response.json();
+                    addMessage(`Error: ${error.detail || 'Unknown error'}`, false);
+                }
+            } catch (error) {
+                addMessage('Network error. Please check your connection.', false);
+                console.error('Chat error:', error);
+            } finally {
+                sendButton.disabled = false;
+                sendButton.textContent = 'Send';
+            }
+        }
+
+        // Event listeners
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', showModal);
+        }
+        if (modalClose) {
+            modalClose.addEventListener('click', hideModal);
+        }
+        
+        // Close modal when clicking outside
+        if (agentModal) {
+            agentModal.addEventListener('click', (e) => {
+                if (e.target === agentModal) {
+                    hideModal();
+                }
+            });
+        }
+
+        // Agent selection
+        if (agentOptions.length) {
+            agentOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const agentType = option.dataset.agent;
+                    selectAgent(agentType);
+                });
+            });
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendMessage();
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Initialize - check if agent was specified in URL
+        document.addEventListener('DOMContentLoaded', () => {
+            if (normalizedAgent) {
+                selectAgent(normalizedAgent);
+            } else {
+                showModal();
+            }
+        });
+    </script>
+</body>
+</html>

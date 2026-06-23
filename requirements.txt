@@ -1,0 +1,2 @@
+-r fastapi_backend/requirements.txt
+-r fastapi_backend/agent/requirements.txt

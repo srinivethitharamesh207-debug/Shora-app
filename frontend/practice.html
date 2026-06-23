@@ -28,13 +28,13 @@
                 <article class="practice-card">
                     <h2>Weekly Goal</h2>
                     <div class="goal-row">
-                        <div class="goal-ring zero">
-                            <span>0%</span>
+                        <div class="goal-ring zero" id="goalRing">
+                            <span id="goalPercent">0%</span>
                             <small>Complete</small>
                         </div>
                         <div class="goal-text">
-                            <p>Learn 0 hours this week</p>
-                            <button class="goal-btn" type="button">Edit Goal</button>
+                            <p id="goalText">Learn 0 hours this week</p>
+                            <button class="goal-btn" id="openGoalSheet" type="button">Edit Goal</button>
                         </div>
                     </div>
                     <p class="practice-empty">No active goal yet. Set your weekly target to get started.</p>
@@ -50,7 +50,7 @@
                             <h3>Python Basics</h3>
                             <p>Beginner · 0%</p>
                         </div>
-                        <button class="pill" type="button">Start</button>
+                        <button class="pill start-course" type="button">Start</button>
                     </article>
                     <article class="course-mini">
                         <div class="mini-icon">JS</div>
@@ -58,7 +58,7 @@
                             <h3>JavaScript Fundamentals</h3>
                             <p>Web Dev · 0%</p>
                         </div>
-                        <button class="pill" type="button">Start</button>
+                        <button class="pill start-course" type="button">Start</button>
                     </article>
                 </div>
 
@@ -144,11 +144,41 @@
         </div>
     </div>
 
+    <div id="goalSheetOverlay" class="sheet-overlay" aria-hidden="true"></div>
+    <div id="goalSheet" class="sheet-panel" role="dialog" aria-modal="true" aria-label="Edit goal">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title">
+            <h3>Edit Weekly Goal</h3>
+            <button id="closeGoalSheet" class="sheet-close" type="button">×</button>
+        </div>
+        <div class="sheet-option">
+            <span>Target Hours</span>
+            <small>Set a weekly goal</small>
+        </div>
+        <div class="sheet-option">
+            <span>Suggested</span>
+            <small>2, 4, 6 hours</small>
+        </div>
+        <button class="pill goal-save" type="button">Save Goal</button>
+    </div>
+
+    <div id="practiceToast" class="app-toast" aria-live="polite"></div>
+
     <script>
         const calendarSheet = document.getElementById('calendarSheet');
         const calendarOverlay = document.getElementById('calendarSheetOverlay');
         const openCalendar = document.getElementById('openCalendarSheet');
         const closeCalendar = document.getElementById('closeCalendarSheet');
+        const goalSheet = document.getElementById('goalSheet');
+        const goalOverlay = document.getElementById('goalSheetOverlay');
+        const openGoal = document.getElementById('openGoalSheet');
+        const closeGoal = document.getElementById('closeGoalSheet');
+        const goalSave = document.querySelector('.goal-save');
+        const goalText = document.getElementById('goalText');
+        const goalPercent = document.getElementById('goalPercent');
+        const goalRing = document.getElementById('goalRing');
+        const startButtons = document.querySelectorAll('.start-course');
+        const practiceToast = document.getElementById('practiceToast');
 
         function showCalendar() {
             calendarSheet.classList.add('show');
@@ -160,9 +190,45 @@
             calendarOverlay.classList.remove('show');
         }
 
+        function showGoal() {
+            goalSheet.classList.add('show');
+            goalOverlay.classList.add('show');
+        }
+
+        function hideGoal() {
+            goalSheet.classList.remove('show');
+            goalOverlay.classList.remove('show');
+        }
+
         openCalendar.addEventListener('click', showCalendar);
         closeCalendar.addEventListener('click', hideCalendar);
         calendarOverlay.addEventListener('click', hideCalendar);
+        openGoal.addEventListener('click', showGoal);
+        closeGoal.addEventListener('click', hideGoal);
+        goalOverlay.addEventListener('click', hideGoal);
+
+        if (goalSave) {
+            goalSave.addEventListener('click', () => {
+                const hours = window.prompt('Set weekly goal hours', '2');
+                if (hours === null) return;
+                const value = Math.max(0, Number(hours) || 0);
+                goalText.textContent = `Learn ${value} hours this week`;
+                goalPercent.textContent = '0%';
+                goalRing.classList.toggle('zero', value === 0);
+                if (practiceToast) {
+                    practiceToast.textContent = 'Goal updated';
+                    practiceToast.classList.add('show');
+                    setTimeout(() => practiceToast.classList.remove('show'), 1400);
+                }
+                hideGoal();
+            });
+        }
+
+        startButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                window.location.href = 'search.html';
+            });
+        });
     </script>
 </body>
 </html>

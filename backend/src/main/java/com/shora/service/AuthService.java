@@ -1,5 +1,6 @@
 package com.shora.service;
 
+import com.shora.dto.ForgotPasswordRequest;
 import com.shora.dto.LoginRequest;
 import com.shora.dto.SignupRequest;
 import com.shora.model.User;
@@ -96,6 +97,19 @@ public class AuthService {
 
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public Map<String, String> forgotPassword(ForgotPasswordRequest request) {
+        String email = request.getEmail() == null ? null : request.getEmail().trim();
+        if (email == null || email.isEmpty()) {
+            throw new RuntimeException("Email is required");
+        }
+
+        userRepository.existsByEmail(email);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "If the email exists, a reset link has been sent.");
+        return response;
     }
 
     private Map<String, Object> buildUserResponse(User user) {

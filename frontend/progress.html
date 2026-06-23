@@ -166,6 +166,19 @@
             `;
         }
 
+        function animateCount(el, target) {
+            const start = 0;
+            const duration = 600;
+            const startTime = performance.now();
+            function step(now) {
+                const progress = Math.min(1, (now - startTime) / duration);
+                const value = Math.round(start + (target - start) * progress);
+                el.textContent = value;
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
         function renderProgress(data) {
             const hours = Array.isArray(data.weekly_hours) ? data.weekly_hours : [];
             const days = Array.isArray(data.days) ? data.days : [];
@@ -177,20 +190,22 @@
 
             const completed = Number(data.completed_pct || 0);
             const badges = Number(data.badges_pct || 0);
-            completedPct.textContent = completed;
-            badgesPct.textContent = badges;
+            animateCount(completedPct, completed);
+            animateCount(badgesPct, badges);
             donutChart.classList.toggle('zero', completed === 0 && badges === 0);
             const badgeEnd = Math.min(100, completed + badges);
             donutChart.style.background = `conic-gradient(#45c2d5 0 ${completed}%, #f0c36d ${completed}% ${badgeEnd}%, #dfe7f1 ${badgeEnd}% 100%)`;
 
-            coursesMastered.textContent = data.courses_mastered || 0;
-            streakDays.textContent = data.streak_days || 0;
+            animateCount(coursesMastered, data.courses_mastered || 0);
+            animateCount(streakDays, data.streak_days || 0);
 
             progressEmpty.style.display = total === 0 ? 'block' : 'none';
             achievementsEmpty.style.display = (completed === 0 && badges === 0) ? 'block' : 'none';
         }
 
-        fetch('http://localhost:8000/api/progress')
+        const API_BASE = 'http://127.0.0.1:8000/api';
+
+        fetch(`${API_BASE}/progress`)
             .then(res => res.json())
             .then(renderProgress)
             .catch(() => renderProgress({}));
